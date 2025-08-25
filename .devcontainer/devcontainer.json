@@ -1,7 +1,8 @@
 {
   "name": "DySAT (Python 3.6)",
   "build": {
-    "dockerfile": "Dockerfile"
+    "dockerfile": "Dockerfile",
+    "context": ".."
   },
   "settings": {
     "python.defaultInterpreterPath": "/usr/local/bin/python",
