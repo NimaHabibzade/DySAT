@@ -3,7 +3,7 @@ import numpy as np
 import networkx as nx
 import scipy.sparse as sp
 import tensorflow as tf
-from utilities import run_random_walks_n2v
+from .utilities import run_random_walks_n2v
 import dill
 
 flags = tf.app.flags
@@ -13,9 +13,9 @@ np.random.seed(123)
 
 def load_graphs(dataset_str):
     """Load graph snapshots given the name of dataset"""
-    graphs = np.load("data/{}/{}".format(dataset_str, "graphs.npz"), allow_pickle=True)['graph']
+    graphs = np.load("data/{}/{}".format(dataset_str, "graphs.npz"), allow_pickle=True, encoding="latin1")['graph']
     print("Loaded {} graphs ".format(len(graphs)))
-    adj_matrices = map(lambda x: nx.adjacency_matrix(x), graphs)
+    adj_matrices = list(map(lambda x: nx.adjacency_matrix(x), graphs))
     return graphs, adj_matrices
 
 
@@ -155,7 +155,7 @@ def create_data_splits(adj, next_adj, val_mask_fraction=0.2, test_mask_fraction=
         rows_close = np.all(np.round(a - b[:, None], tol) == 0, axis=-1)
         return np.any(rows_close)
 
-    all_edge_idx = range(edges.shape[0])
+    all_edge_idx = list(range(edges.shape[0]))
     np.random.shuffle(all_edge_idx)
     num_test = int(np.floor(edges.shape[0] * test_mask_fraction))
     num_val = int(np.floor(edges.shape[0] * val_mask_fraction))

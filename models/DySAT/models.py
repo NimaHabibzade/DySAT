@@ -1,3 +1,5 @@
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from layers import *
 
 flags = tf.app.flags
@@ -93,10 +95,10 @@ class DySAT(Model):
         self.num_features_nonzero = num_features_nonzero
         self.degrees = degrees
         self.num_features = num_features
-        self.structural_head_config = map(int, FLAGS.structural_head_config.split(","))
-        self.structural_layer_config = map(int, FLAGS.structural_layer_config.split(","))
-        self.temporal_head_config = map(int, FLAGS.temporal_head_config.split(","))
-        self.temporal_layer_config = map(int, FLAGS.temporal_layer_config.split(","))
+        self.structural_head_config = list(map(int, FLAGS.structural_head_config.split(",")))
+        self.structural_layer_config = list(map(int, FLAGS.structural_layer_config.split(",")))
+        self.temporal_head_config = list(map(int, FLAGS.temporal_head_config.split(",")))
+        self.temporal_layer_config = list(map(int, FLAGS.temporal_layer_config.split(",")))
         self._build()
 
     def _build(self):

@@ -1,5 +1,7 @@
 from tensorflow.python.ops import math_ops
 from inits import *
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 conv1d = tf.layers.conv1d
 

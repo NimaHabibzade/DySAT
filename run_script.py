@@ -5,8 +5,11 @@ import argparse
 from subprocess import Popen
 import os, json, time
 
+
 """NOTE: This script includes nearly all tf flag parameters as input arguments, which feed as input 
 through a generated config file."""
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 parser = argparse.ArgumentParser(description='Run script parameters')
 
