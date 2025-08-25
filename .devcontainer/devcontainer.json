@@ -1,0 +1,18 @@
+{
+  "name": "DySAT (Python 3.6)",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "settings": {
+    "python.defaultInterpreterPath": "/usr/local/bin/python",
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "extensions": [
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-toolsai.jupyter"
+  ],
+  "postCreateCommand": "python -m ipykernel install --user --name dysat36 --display-name 'DySAT (py3.6)' || true",
+  "forwardPorts": [8888],
+  "remoteUser": "codespace"
+}
