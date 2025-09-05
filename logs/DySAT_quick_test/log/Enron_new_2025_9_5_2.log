@@ -1,0 +1,45 @@
+09/05/2025 07:10:32 - INFO: dict_items([('base_model', 'DySAT'), ('model', 'quick_test'), ('dataset', 'Enron_new'), ('time_steps', 2), ('GPU_ID', 0), ('epochs', 5), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1)])
+09/05/2025 07:10:32 - INFO: # train: 4, # val: 3, # test: 10
+09/05/2025 07:10:40 - WARNING: From /usr/local/lib/python3.6/site-packages/tensorflow/python/ops/sparse_grad.py:281: calling sparse_reduce_sum (from tensorflow.python.ops.sparse_ops) with keep_dims is deprecated and will be removed in a future version.
+Instructions for updating:
+keep_dims is deprecated, use keepdims instead
+09/05/2025 07:10:46 - INFO: Mini batch Iter: 0 train_loss= 6.34225
+09/05/2025 07:10:46 - INFO: Mini batch Iter: 0 graph_loss= 6.28036
+09/05/2025 07:10:46 - INFO: Mini batch Iter: 0 reg_loss= 0.06189
+09/05/2025 07:10:46 - INFO: Time for Mini batch : 2.598379135131836
+09/05/2025 07:10:46 - INFO: Time for epoch : 2.5980587005615234
+09/05/2025 07:10:47 - INFO: Val results at epoch 0: Measure (HAD) AUC: 0.888888888888889
+09/05/2025 07:10:47 - INFO: Test results at epoch 0: Measure (HAD) AUC: 0.8
+09/05/2025 07:10:47 - INFO: Mini batch Iter: 0 train_loss= 4.49259
+09/05/2025 07:10:47 - INFO: Mini batch Iter: 0 graph_loss= 4.43079
+09/05/2025 07:10:47 - INFO: Mini batch Iter: 0 reg_loss= 0.06180
+09/05/2025 07:10:47 - INFO: Time for Mini batch : 0.028231382369995117
+09/05/2025 07:10:47 - INFO: Time for epoch : 0.027939558029174805
+09/05/2025 07:10:47 - INFO: Val results at epoch 1: Measure (HAD) AUC: 0.888888888888889
+09/05/2025 07:10:47 - INFO: Test results at epoch 1: Measure (HAD) AUC: 0.81
+09/05/2025 07:10:47 - INFO: Mini batch Iter: 0 train_loss= 3.78684
+09/05/2025 07:10:47 - INFO: Mini batch Iter: 0 graph_loss= 3.72513
+09/05/2025 07:10:47 - INFO: Mini batch Iter: 0 reg_loss= 0.06171
+09/05/2025 07:10:47 - INFO: Time for Mini batch : 0.026303768157958984
+09/05/2025 07:10:47 - INFO: Time for epoch : 0.02586078643798828
+09/05/2025 07:10:47 - INFO: Val results at epoch 2: Measure (HAD) AUC: 0.888888888888889
+09/05/2025 07:10:47 - INFO: Test results at epoch 2: Measure (HAD) AUC: 0.84
+09/05/2025 07:10:47 - INFO: Mini batch Iter: 0 train_loss= 2.84178
+09/05/2025 07:10:47 - INFO: Mini batch Iter: 0 graph_loss= 2.78016
+09/05/2025 07:10:47 - INFO: Mini batch Iter: 0 reg_loss= 0.06162
+09/05/2025 07:10:47 - INFO: Time for Mini batch : 0.025705575942993164
+09/05/2025 07:10:47 - INFO: Time for epoch : 0.02536773681640625
+09/05/2025 07:10:47 - INFO: Val results at epoch 3: Measure (HAD) AUC: 0.888888888888889
+09/05/2025 07:10:47 - INFO: Test results at epoch 3: Measure (HAD) AUC: 0.8300000000000001
+09/05/2025 07:10:47 - INFO: Mini batch Iter: 0 train_loss= 2.45122
+09/05/2025 07:10:47 - INFO: Mini batch Iter: 0 graph_loss= 2.38970
+09/05/2025 07:10:47 - INFO: Mini batch Iter: 0 reg_loss= 0.06152
+09/05/2025 07:10:47 - INFO: Time for Mini batch : 0.027940034866333008
+09/05/2025 07:10:47 - INFO: Time for epoch : 0.0276339054107666
+09/05/2025 07:10:47 - INFO: Val results at epoch 4: Measure (HAD) AUC: 1.0
+09/05/2025 07:10:47 - INFO: Test results at epoch 4: Measure (HAD) AUC: 0.8
+09/05/2025 07:10:47 - INFO: Best epoch 4
+09/05/2025 07:10:47 - INFO: Best epoch val results defaultdict(<function evaluate_classifier.<locals>.<lambda> at 0x782ad8945840>, {'SIGMOID': [1.0, 1.0], 'HAD': [1.0, 1.0]})
+
+09/05/2025 07:10:47 - INFO: Best epoch test results defaultdict(<function evaluate_classifier.<locals>.<lambda> at 0x782ad8945620>, {'SIGMOID': [0.6499999999999999, 0.6499999999999999], 'HAD': [0.8, 0.8]})
+

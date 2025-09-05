@@ -1,0 +1,4 @@
+Enron_new,2,quick_test,SIGMOID,val,AUC,1.0
+Enron_new,2,quick_test,HAD,val,AUC,1.0
+Enron_new,2,quick_test,SIGMOID,test,AUC,0.6499999999999999
+Enron_new,2,quick_test,HAD,test,AUC,0.8

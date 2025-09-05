@@ -6,7 +6,7 @@
 
 
 This repository contains a TensorFlow implementation of DySAT - Dynamic Self Attention (DySAT) networks for 
-dynamic graph representation Learning. DySAT is an unsupervised graph embedding 
+dynamic graph reprscesentation Learning. DySAT is an unsupervised graph embedding 
 model to learn node embeddings in dynamic time-evolving attributed graphs, which may later be used for downstream application tasks such as link prediction, clustering and node classification.
 
 Note: Though DySAT is designed for attributed dynamic graphs, our benchmarking experiments are carried out on datasets that do not have node attributes.
