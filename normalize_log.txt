@@ -1,0 +1,25 @@
+Reading data/processed_data/enron/0.pickle
+Detected missing class in pickle: DataEdgeAttr  — creating placeholder and retrying.
+Detected missing class in pickle: DataTensorAttr  — creating placeholder and retrying.
+Wrote simplified: data/processed_data/enron_simple/0.pickle
+Reading data/processed_data/enron/1.pickle
+Wrote simplified: data/processed_data/enron_simple/1.pickle
+Reading data/processed_data/enron/2.pickle
+Wrote simplified: data/processed_data/enron_simple/2.pickle
+Reading data/processed_data/enron/3.pickle
+Wrote simplified: data/processed_data/enron_simple/3.pickle
+Reading data/processed_data/enron/4.pickle
+Wrote simplified: data/processed_data/enron_simple/4.pickle
+Reading data/processed_data/enron/5.pickle
+Wrote simplified: data/processed_data/enron_simple/5.pickle
+Reading data/processed_data/enron/6.pickle
+Wrote simplified: data/processed_data/enron_simple/6.pickle
+Reading data/processed_data/enron/7.pickle
+Wrote simplified: data/processed_data/enron_simple/7.pickle
+Reading data/processed_data/enron/8.pickle
+Wrote simplified: data/processed_data/enron_simple/8.pickle
+Reading data/processed_data/enron/9.pickle
+Wrote simplified: data/processed_data/enron_simple/9.pickle
+Reading data/processed_data/enron/10.pickle
+Wrote simplified: data/processed_data/enron_simple/10.pickle
+Done. Simplified pickles are in: data/processed_data/enron_simple

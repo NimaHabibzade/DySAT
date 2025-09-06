@@ -91,15 +91,75 @@ def build_adj_and_mask(d, N, detect_1based=True):
         adj.eliminate_zeros()
     return adj, mask
 
-def convert(processed_dir, out_dir):
+import networkx as nx
+
+import os, argparse, pickle
+import numpy as np
+import networkx as nx
+
+def convert(processed_dir, out_dir, N=None):
+    files = sorted(os.listdir(processed_dir), key=lambda x: int(os.path.splitext(x)[0]))
+    if not files:
+        raise RuntimeError("No files in processed_dir")
+
+    first = pickle.load(open(os.path.join(processed_dir, files[0]), 'rb'))
+    if N is None:
+        # Try to infer from node_mask or x
+        if first["node_mask"] is not None:
+            N = len(first["node_mask"])
+        elif first["x"] is not None:
+            N = first["x"].shape[0]
+        else:
+            N = int(first["edge_index"].max() + 1)
+    print("Using N =", N)
+
+    graphs = []
+    masks = []
+
+    for f in files:
+        path = os.path.join(processed_dir, f)
+        with open(path, 'rb') as handle:
+            d = pickle.load(handle)
+
+        # Build NetworkX graph
+        G = nx.Graph()
+        G.add_nodes_from(range(N))  # always N nodes
+        ei = d["edge_index"]
+        if ei is not None and ei.size > 0:
+            edges = list(zip(ei[0], ei[1]))
+            G.add_edges_from(edges)
+        graphs.append(G)
+
+        # Node mask
+        mask = d["node_mask"]
+        if mask is None:
+            mask = np.ones(N, dtype=bool)
+        masks.append(mask.astype(bool))
+
+    os.makedirs(out_dir, exist_ok=True)
+    np.savez_compressed(os.path.join(out_dir, "graphs.npz"), graph=np.array(graphs, dtype=object))
+    np.save(os.path.join(out_dir, "node_masks.npy"), np.vstack(masks))
+
+    print("Wrote:", os.path.join(out_dir, "graphs.npz"))
+    print("Wrote:", os.path.join(out_dir, "node_masks.npy"))
+    print("Done. Dataset ready as:", os.path.basename(out_dir))
+
+
+"""def convert(processed_dir, out_dir, N=None):
     files = sorted(os.listdir(processed_dir), key=lambda x: int(os.path.splitext(x)[0]))
     if not files:
         raise RuntimeError("No files in processed_dir")
     # try to get N from first file
     first = pickle.load(open(os.path.join(processed_dir, files[0]), 'rb'))
     N = infer_N_from_mask_or_edges(first, default=None)
-    if N is None:
-        raise RuntimeError("Could not infer node count; please supply --N")
+    if args.N is not None:
+        N = args.N
+        print("Using user-specified N =", N)
+    else:
+        N = infer_N_from_mask_or_edges(first, default=None)
+        if N is None:
+            raise RuntimeError("Could not infer node count; please supply --N")
+    print("Inferred global N =", N)
     print("Inferred global N =", N)
     adjs = []
     masks = []
@@ -115,19 +175,20 @@ def convert(processed_dir, out_dir):
     for i,a in enumerate(adjs):
         arr[i] = a
     outpath = os.path.join(out_dir, "graphs.npz")
-    np.savez_compressed(outpath, data=arr)
+    np.savez_compressed(outpath, graph=arr)
     masks_arr = np.vstack(masks).astype(bool)  # shape T x N
     np.save(os.path.join(out_dir, "node_masks.npy"), masks_arr)
     print("Wrote:", outpath)
     print("Wrote:", os.path.join(out_dir, "node_masks.npy"))
     print("Done. Dataset ready as:", os.path.basename(out_dir))
-    return outpath
+    return outpath"""
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--processed_dir", required=True)
     p.add_argument("--dataset_name", default=None)
     p.add_argument("--out_dir", default=None)
+    p.add_argument("--N", type=int, default=None, help="Number of nodes")
     args = p.parse_args()
     if args.out_dir:
         out = args.out_dir
@@ -135,4 +196,4 @@ if __name__ == "__main__":
         out = os.path.join("data", args.dataset_name)
     else:
         raise RuntimeError("Provide --out_dir or --dataset_name")
-    convert(args.processed_dir, out)
+    convert(args.processed_dir, args.out_dir, args.N)
