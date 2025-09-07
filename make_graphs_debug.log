@@ -1,0 +1,60 @@
+Using N = 184
+=== Reading: data/processed_data/enron_simple/0.pickle
+  pickle type: dict, keys: ['edge_index', 'node_mask', 'x', 'timestep', 'timestamp', 'edge_count']
+  built Graph: nodes=184, edges=115
+  node_mask shape: (184,) present_count: 93
+=== Reading: data/processed_data/enron_simple/1.pickle
+  pickle type: dict, keys: ['edge_index', 'node_mask', 'x', 'timestep', 'timestamp', 'edge_count']
+  built Graph: nodes=184, edges=156
+  node_mask shape: (184,) present_count: 102
+=== Reading: data/processed_data/enron_simple/2.pickle
+  pickle type: dict, keys: ['edge_index', 'node_mask', 'x', 'timestep', 'timestamp', 'edge_count']
+  built Graph: nodes=184, edges=212
+  node_mask shape: (184,) present_count: 115
+=== Reading: data/processed_data/enron_simple/3.pickle
+  pickle type: dict, keys: ['edge_index', 'node_mask', 'x', 'timestep', 'timestamp', 'edge_count']
+  built Graph: nodes=184, edges=223
+  node_mask shape: (184,) present_count: 120
+=== Reading: data/processed_data/enron_simple/4.pickle
+  pickle type: dict, keys: ['edge_index', 'node_mask', 'x', 'timestep', 'timestamp', 'edge_count']
+  built Graph: nodes=184, edges=179
+  node_mask shape: (184,) present_count: 112
+=== Reading: data/processed_data/enron_simple/5.pickle
+  pickle type: dict, keys: ['edge_index', 'node_mask', 'x', 'timestep', 'timestamp', 'edge_count']
+  built Graph: nodes=184, edges=265
+  node_mask shape: (184,) present_count: 119
+=== Reading: data/processed_data/enron_simple/6.pickle
+  pickle type: dict, keys: ['edge_index', 'node_mask', 'x', 'timestep', 'timestamp', 'edge_count']
+  built Graph: nodes=184, edges=240
+  node_mask shape: (184,) present_count: 120
+=== Reading: data/processed_data/enron_simple/7.pickle
+  pickle type: dict, keys: ['edge_index', 'node_mask', 'x', 'timestep', 'timestamp', 'edge_count']
+  built Graph: nodes=184, edges=253
+  node_mask shape: (184,) present_count: 119
+=== Reading: data/processed_data/enron_simple/8.pickle
+  pickle type: dict, keys: ['edge_index', 'node_mask', 'x', 'timestep', 'timestamp', 'edge_count']
+  built Graph: nodes=184, edges=245
+  node_mask shape: (184,) present_count: 119
+=== Reading: data/processed_data/enron_simple/9.pickle
+  pickle type: dict, keys: ['edge_index', 'node_mask', 'x', 'timestep', 'timestamp', 'edge_count']
+  built Graph: nodes=184, edges=238
+  node_mask shape: (184,) present_count: 111
+=== Reading: data/processed_data/enron_simple/10.pickle
+  pickle type: dict, keys: ['edge_index', 'node_mask', 'x', 'timestep', 'timestamp', 'edge_count']
+  built Graph: nodes=184, edges=266
+  node_mask shape: (184,) present_count: 116
+Wrote: data/EnronDySAT/graphs.npz
+Wrote: data/EnronDySAT/node_masks.npy
+=== Verifying saved graphs.npz ...
+  Index 0 NOT a Graph: <class 'numpy.ndarray'>
+  Index 1 NOT a Graph: <class 'numpy.ndarray'>
+  Index 2 NOT a Graph: <class 'numpy.ndarray'>
+  Index 3 NOT a Graph: <class 'numpy.ndarray'>
+  Index 4 NOT a Graph: <class 'numpy.ndarray'>
+  Index 5 NOT a Graph: <class 'numpy.ndarray'>
+  Index 6 NOT a Graph: <class 'numpy.ndarray'>
+  Index 7 NOT a Graph: <class 'numpy.ndarray'>
+  Index 8 NOT a Graph: <class 'numpy.ndarray'>
+  Index 9 NOT a Graph: <class 'numpy.ndarray'>
+  Index 10 NOT a Graph: <class 'numpy.ndarray'>
+All Graph objects? -> False

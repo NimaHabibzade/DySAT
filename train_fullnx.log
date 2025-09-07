@@ -1,0 +1,22 @@
+Updated flags dict_items([('base_model', 'DySAT'), ('model', 'quick_test'), ('dataset', 'EnronDySAT'), ('time_steps', 2), ('GPU_ID', 0), ('epochs', 2), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1)])
+Traceback (most recent call last):
+  File "/workspaces/DySAT/utils/preprocess.py", line 290, in load_graphs
+    adj = nx.adjacency_matrix(g)
+  File "/usr/local/lib/python3.6/site-packages/networkx/linalg/graphmatrix.py", line 160, in adjacency_matrix
+    return nx.to_scipy_sparse_matrix(G,nodelist=nodelist,weight=weight)
+  File "/usr/local/lib/python3.6/site-packages/networkx/convert_matrix.py", line 700, in to_scipy_sparse_matrix
+    if G.number_of_edges() == 0:
+AttributeError: 'numpy.ndarray' object has no attribute 'number_of_edges'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "train.py", line 108, in <module>
+    graphs, adjs = load_graphs(FLAGS.dataset)
+  File "/workspaces/DySAT/utils/preprocess.py", line 292, in load_graphs
+    raise RuntimeError("Cannot convert graph at index {} of type {} to adjacency: {}".format(i, type(g), e))
+RuntimeError: Cannot convert graph at index 0 of type <class 'numpy.ndarray'> to adjacency: 'numpy.ndarray' object has no attribute 'number_of_edges'
+Namespace(GPU_ID=0, base_model='DySAT', batch_size=512, dataset='EnronDySAT', epochs=2, featureless='True', learning_rate=0.001, max_gradient_norm=1.0, max_time=2, min_time=2, model='quick_test', neg_sample_size=10, neg_weight=1.0, position_ffn='True', run_parallel='False', spatial_drop=0.1, structural_head_config='16,8,8', structural_layer_config='128', temporal_drop=0.5, temporal_head_config='16', temporal_layer_config='128', test_freq=1, use_residual='False', val_freq=1, walk_len=20, weight_decay=0.0005, window=-1)
+Args parallel param:  False
+Running time steps 2 to 2 sequentially on GPU 0
+Call  python train.py --time_steps 2 --base_model DySAT --model quick_test --dataset EnronDySAT

@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "scripts/graphs_adj_to_nx.py", line 51, in <module>
+    raise RuntimeError("Unsupported graph element type at index {}: {}".format(i, type(g)))
+RuntimeError: Unsupported graph element type at index 0: <class 'numpy.ndarray'>

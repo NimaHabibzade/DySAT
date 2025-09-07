@@ -1,0 +1,3 @@
+Using N = 184
+Wrote: data/EnronDySAT/graphs.npz
+Wrote: data/EnronDySAT/node_masks.npy

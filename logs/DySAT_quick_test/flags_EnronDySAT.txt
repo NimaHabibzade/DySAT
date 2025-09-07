@@ -5,7 +5,7 @@ base_model	DySAT
 model	quick_test
 dataset	EnronDySAT
 GPU_ID	0
-epochs	5
+epochs	2
 val_freq	1
 test_freq	1
 batch_size	512

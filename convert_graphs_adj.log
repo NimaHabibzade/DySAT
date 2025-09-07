@@ -1,0 +1,6 @@
+/usr/local/lib/python3.6/site-packages/scipy/sparse/compressed.py:746: SparseEfficiencyWarning: Changing the sparsity structure of a csr_matrix is expensive. lil_matrix is more efficient.
+  SparseEfficiencyWarning)
+Using N = 184
+Wrote: data/EnronDySAT/graphs.npz
+Wrote: data/EnronDySAT/node_masks.npy
+Done. Dataset ready as: EnronDySAT
