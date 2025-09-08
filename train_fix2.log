@@ -1,0 +1,28 @@
+/usr/local/lib/python3.6/site-packages/scipy/sparse/compressed.py:746: SparseEfficiencyWarning: Changing the sparsity structure of a csr_matrix is expensive. lil_matrix is more efficient.
+  SparseEfficiencyWarning)
+Updated flags dict_items([('base_model', 'DySAT'), ('model', 'quick_test'), ('dataset', 'EnronDySAT'), ('time_steps', 2), ('GPU_ID', 0), ('epochs', 2), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1)])
+Loaded context pairs from pkl file directly
+Generating and saving eval data ....
+Traceback (most recent call last):
+  File "/workspaces/DySAT/utils/preprocess.py", line 135, in get_evaluation_data
+    np.load(eval_path, encoding='bytes', allow_pickle=True)['data']
+  File "/usr/local/lib/python3.6/site-packages/numpy/lib/npyio.py", line 372, in load
+    fid = open(file, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: 'data/EnronDySAT/eval_0.npz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "train.py", line 128, in <module>
+    get_evaluation_data(adjs, num_time_steps, FLAGS.dataset)
+  File "/workspaces/DySAT/utils/preprocess.py", line 141, in get_evaluation_data
+    create_data_splits(adjs[eval_idx], next_adjs, val_mask_fraction=0.2, test_mask_fraction=0.6)
+  File "/workspaces/DySAT/utils/preprocess.py", line 235, in create_data_splits
+    assert ~ismember(test_edges_false, edges_all)
+  File "/workspaces/DySAT/utils/preprocess.py", line 167, in ismember
+    rows_close = np.all(np.round(a - b[:, None], tol) == 0, axis=-1)
+ValueError: operands could not be broadcast together with shapes (0,) (0,1,2) 
+Namespace(GPU_ID=0, base_model='DySAT', batch_size=512, dataset='EnronDySAT', epochs=2, featureless='True', learning_rate=0.001, max_gradient_norm=1.0, max_time=2, min_time=2, model='quick_test', neg_sample_size=10, neg_weight=1.0, position_ffn='True', run_parallel='False', spatial_drop=0.1, structural_head_config='16,8,8', structural_layer_config='128', temporal_drop=0.5, temporal_head_config='16', temporal_layer_config='128', test_freq=1, use_residual='False', val_freq=1, walk_len=20, weight_decay=0.0005, window=-1)
+Args parallel param:  False
+Running time steps 2 to 2 sequentially on GPU 0
+Call  python train.py --time_steps 2 --base_model DySAT --model quick_test --dataset EnronDySAT

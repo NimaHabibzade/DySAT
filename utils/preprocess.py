@@ -1,42 +1,68 @@
 from __future__ import print_function
+import pickle
 import numpy as np
 import networkx as nx
 import scipy.sparse as sp
 import tensorflow as tf
 from .utilities import run_random_walks_n2v
 import dill
-import numpy as np
-from scipy import sparse
+import os
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
 np.random.seed(123)
 
-
 def load_graphs(dataset_str):
-    """Load graph snapshots given the name of dataset"""
-    loaded = np.load("data/{}/{}".format(dataset_str, "graphs.npz"), allow_pickle=True, encoding="latin1")
-    graphs = loaded['graph']
-    adj_matrices = []
-    for g in graphs:
-        # SciPy sparse matrix stored
-        if sparse.isspmatrix(g):
-            adj_matrices.append(g.tocsr())
-        # already a numpy 2D adjacency matrix
-        elif isinstance(g, np.ndarray) and g.ndim == 2:
-            adj_matrices.append(sparse.csr_matrix(g))
-        # NetworkX graph
+    """
+    Robust loader that returns (graphs, adjs)
+    - graphs: list of NetworkX graphs
+    - adjs: list of scipy.sparse.csr_matrix adjacency matrices
+    """
+    path = os.path.join("data", dataset_str)
+    
+    # Load graphs
+    graphs_path = os.path.join(path, "graphs.pkl")
+    if os.path.exists(graphs_path):
+        with open(graphs_path, 'rb') as f:
+            graphs = pickle.load(f)
+    else:
+        # Fallback to npz format
+        npz_path = os.path.join(path, "graphs.npz")
+        if not os.path.exists(npz_path):
+            raise RuntimeError(f"No graph files found in {path}")
+        z = np.load(npz_path, allow_pickle=True)
+        graphs = z['graph']
+    
+    # Convert to NetworkX graphs if they are arrays
+    graphs_out, adjs = [], []
+    for i, g in enumerate(graphs):
+        if isinstance(g, np.ndarray):
+            if g.ndim == 2:
+                # Convert adjacency matrix to NetworkX graph
+                G = nx.from_numpy_array(g)
+            else:
+                raise ValueError(f"Unsupported array shape: {g.shape}")
+        elif sp.isspmatrix(g):
+            # Convert sparse matrix to NetworkX graph
+            G = nx.from_scipy_sparse_matrix(g)
         else:
-            adj_matrices.append(nx.adjacency_matrix(g))
-        return graphs, adj_matrices
-
+            G = g
+        
+        # Create adjacency matrix
+        adj = nx.adjacency_matrix(G)
+        adj.setdiag(0)
+        adj.eliminate_zeros()
+        
+        graphs_out.append(G)
+        adjs.append(adj)
+    
+    return graphs_out, adjs
 
 def load_feats(dataset_str):
     """ Load node attribute snapshots given the name of dataset (not used in experiments)"""
     features = np.load("data/{}/{}".format(dataset_str, "features.npz"), allow_pickle=True)['feats']
     print("Loaded {} X matrices ".format(len(features)))
     return features
-
 
 def sparse_to_tuple(sparse_mx):
     """Convert scipy sparse matrix to tuple representation (for tf feed dict)."""
@@ -84,7 +110,6 @@ def sparse_to_tuple(sparse_mx):
 
     return sparse_mx
 
-
 def preprocess_features(features):
     """Row-normalize feature matrix and convert to tuple representation"""
     rowsum = np.array(features.sum(1))
@@ -93,7 +118,6 @@ def preprocess_features(features):
     r_mat_inv = sp.diags(r_inv)
     features = r_mat_inv.dot(features)
     return features.todense(), sparse_to_tuple(features)
-
 
 def normalize_graph_gcn(adj):
     """GCN-based normalization of adjacency matrix (scipy sparse format). Output is in tuple format"""
@@ -104,10 +128,8 @@ def normalize_graph_gcn(adj):
     adj_normalized = adj_.dot(degree_mat_inv_sqrt).transpose().dot(degree_mat_inv_sqrt).tocoo()
     return sparse_to_tuple(adj_normalized)
 
-
 def get_context_pairs_incremental(graph):
     return run_random_walks_n2v(graph, graph.nodes())
-
 
 def get_context_pairs(graphs, num_time_steps):
     """ Load/generate context pairs for each snapshot through random walk sampling."""
@@ -124,7 +146,6 @@ def get_context_pairs(graphs, num_time_steps):
         print ("Saved pairs")
 
     return context_pairs_train
-
 
 def get_evaluation_data(adjs, num_time_steps, dataset):
     """ Load train/val/test examples to evaluate link prediction performance"""
@@ -144,7 +165,6 @@ def get_evaluation_data(adjs, num_time_steps, dataset):
 
     return train_edges, train_edges_false, val_edges, val_edges_false, test_edges, test_edges_false
 
-
 def create_data_splits(adj, next_adj, val_mask_fraction=0.2, test_mask_fraction=0.6):
     """In: (adj, next_adj) along with test and val fractions. For link prediction (on all links), all links in
     next_adj are considered positive examples.
@@ -163,9 +183,34 @@ def create_data_splits(adj, next_adj, val_mask_fraction=0.2, test_mask_fraction=
             edges.append(e)
     edges = np.array(edges)
 
-    def ismember(a, b, tol=5):
-        rows_close = np.all(np.round(a - b[:, None], tol) == 0, axis=-1)
-        return np.any(rows_close)
+    def ismember(a, b, tol=1e-8):
+        """
+        Safe membership test: for each row in a (shape (m, k)) returns True if that row
+        appears in b (shape (n, k)). Handles empty inputs gracefully.
+        Returns: boolean array of length m.
+        """
+        a = np.asarray(a)
+        b = np.asarray(b)
+
+        # If 'a' is empty -> nothing to compare
+        if a.size == 0:
+            return np.zeros((0,), dtype=bool)
+
+        # If 'b' is empty -> no matches for any 'a' rows
+        if b.size == 0:
+            a_rows = a.shape[0] if a.ndim > 1 else 1
+            return np.zeros((a_rows,), dtype=bool)
+
+        # Ensure 2D (rows x cols)
+        a2 = a.reshape((a.shape[0], -1))
+        b2 = b.reshape((b.shape[0], -1))
+
+        # compute absolute difference and check equality within tol
+        # diff shape: (a_rows, b_rows, cols)
+        diff = np.abs(a2[:, None, :] - b2[None, :, :])
+        eq = np.all(diff <= tol, axis=-1)   # shape (a_rows, b_rows)
+        # return boolean for each a-row whether any b-row matches
+        return eq.any(axis=1)
 
     all_edge_idx = list(range(edges.shape[0]))
     np.random.shuffle(all_edge_idx)
@@ -184,14 +229,15 @@ def create_data_splits(adj, next_adj, val_mask_fraction=0.2, test_mask_fraction=
         idx_j = np.random.randint(0, adj.shape[0])
         if idx_i == idx_j:
             continue
-        if ismember([idx_i, idx_j], edges_all):
+        # Check if edge exists in any direction
+        if ismember(np.array([[idx_i, idx_j]]), edges_all).any() or \
+           ismember(np.array([[idx_j, idx_i]]), edges_all).any():
             continue
-        if ismember([idx_j, idx_i], edges_all):
-            continue
+        # Check if edge already exists in false edges (both directions)
         if train_edges_false:
-            if ismember([idx_j, idx_i], np.array(train_edges_false)):
-                continue
-            if ismember([idx_i, idx_j], np.array(train_edges_false)):
+            existing_false = np.array(train_edges_false)
+            if ismember(np.array([[idx_i, idx_j]]), existing_false).any() or \
+               ismember(np.array([[idx_j, idx_i]]), existing_false).any():
                 continue
         train_edges_false.append([idx_i, idx_j])
 
@@ -202,14 +248,15 @@ def create_data_splits(adj, next_adj, val_mask_fraction=0.2, test_mask_fraction=
         idx_j = np.random.randint(0, adj.shape[0])
         if idx_i == idx_j:
             continue
-        if ismember([idx_i, idx_j], edges_all):
+        # Check if edge exists in any direction
+        if ismember(np.array([[idx_i, idx_j]]), edges_all).any() or \
+           ismember(np.array([[idx_j, idx_i]]), edges_all).any():
             continue
-        if ismember([idx_j, idx_i], edges_all):
-            continue
+        # Check if edge already exists in false edges (both directions)
         if test_edges_false:
-            if ismember([idx_j, idx_i], np.array(test_edges_false)):
-                continue
-            if ismember([idx_i, idx_j], np.array(test_edges_false)):
+            existing_false = np.array(test_edges_false)
+            if ismember(np.array([[idx_i, idx_j]]), existing_false).any() or \
+               ismember(np.array([[idx_j, idx_i]]), existing_false).any():
                 continue
         test_edges_false.append([idx_i, idx_j])
 
@@ -220,104 +267,44 @@ def create_data_splits(adj, next_adj, val_mask_fraction=0.2, test_mask_fraction=
         idx_j = np.random.randint(0, adj.shape[0])
         if idx_i == idx_j:
             continue
-        if ismember([idx_i, idx_j], edges_all):
+        # Check if edge exists in any direction
+        if ismember(np.array([[idx_i, idx_j]]), edges_all).any() or \
+           ismember(np.array([[idx_j, idx_i]]), edges_all).any():
             continue
-        if ismember([idx_j, idx_i], edges_all):
-            continue
-
+        # Check if edge already exists in false edges (both directions)
         if val_edges_false:
-            if ismember([idx_j, idx_i], np.array(val_edges_false)):
-                continue
-            if ismember([idx_i, idx_j], np.array(val_edges_false)):
+            existing_false = np.array(val_edges_false)
+            if ismember(np.array([[idx_i, idx_j]]), existing_false).any() or \
+               ismember(np.array([[idx_j, idx_i]]), existing_false).any():
                 continue
         val_edges_false.append([idx_i, idx_j])
 
-    assert ~ismember(test_edges_false, edges_all)
-    assert ~ismember(val_edges_false, edges_all)
-    assert ~ismember(val_edges, train_edges)
-    assert ~ismember(test_edges, train_edges)
-    assert ~ismember(val_edges, test_edges)
+    # Helper: safe overlap tester
+    def any_overlap(a, b):
+        a = np.asarray(a)
+        b = np.asarray(b)
+        if a.size == 0 or b.size == 0:
+            return False
+        return ismember(a, b).any()
+
+    # Replace fragile asserts with explicit checks (robust to empty arrays)
+    if any_overlap(np.array(test_edges_false), edges_all):
+        raise RuntimeError("Generated negative test edges overlap with true edges (test_edges_false vs edges_all).")
+
+    if any_overlap(np.array(val_edges_false), edges_all):
+        raise RuntimeError("Generated negative val edges overlap with true edges (val_edges_false vs edges_all).")
+
+    if any_overlap(np.array(val_edges), np.array(train_edges)):
+        raise RuntimeError("Val positive edges overlap with training positive edges (val_edges vs train_edges).")
+
+    if any_overlap(np.array(test_edges), np.array(train_edges)):
+        raise RuntimeError("Test positive edges overlap with training positive edges (test_edges vs train_edges).")
+
+    if any_overlap(np.array(val_edges), np.array(test_edges)):
+        raise RuntimeError("Val positive edges overlap with test positive edges (val_edges vs test_edges).")
+
     print("# train examples: ", len(train_edges), len(train_edges_false))
     print("# val examples:", len(val_edges), len(val_edges_false))
     print("# test examples:", len(test_edges), len(test_edges_false))
 
     return list(train_edges), train_edges_false, list(val_edges), val_edges_false, list(test_edges), test_edges_false
-
-# --- appended robust loader (safe for CSR / numpy / networkx.Graph) ---
-import numpy as np
-from scipy import sparse
-import networkx as nx
-import os
-
-def load_graphs(dataset_str):
-    """
-    Robust loader that returns (graphs, adjs)
-    - graphs: object array loaded from data/{dataset_str}/graphs.npz (kept for compatibility)
-    - adjs:  list of scipy.sparse.csr_matrix adjacency matrices (one per timestep)
-    """
-    path = os.path.join("data", dataset_str, "graphs.npz")
-    if not os.path.exists(path):
-        raise RuntimeError("graphs.npz not found at: " + path)
-    z = np.load(path, allow_pickle=True, encoding="latin1")
-    # prefer key 'graph'
-    if 'graph' in z:
-        graphs = z['graph']
-    else:
-        # fallback: if single key present, use it
-        keys = list(z.keys())
-        if len(keys) == 1:
-            graphs = z[keys[0]]
-        else:
-            raise RuntimeError("graphs.npz missing 'graph' key; found keys: " + ",".join(keys))
-
-    # Ensure graphs is sized
-    try:
-        length = len(graphs)
-    except Exception:
-        raise RuntimeError("Loaded graphs is not sized; type: {}".format(type(graphs)))
-
-    graphs_out, adjs = [], []
-    for i, g in enumerate(graphs):
-        # 1) SciPy sparse matrix
-        if sparse.isspmatrix(g):
-            adj = g.tocsr()
-            G = nx.from_scipy_sparse_matrix(adj)
-
-    # 2) numpy ndarray
-        elif isinstance(g, np.ndarray):
-            if g.ndim == 1:
-                # Treat as just node IDs (no edges)
-                G = nx.Graph()
-                G.add_nodes_from(g.tolist())
-                adj = nx.adjacency_matrix(G)
-            elif g.ndim == 2:
-                # Full adjacency matrix
-                adj = sparse.csr_matrix(g)
-                G = nx.from_scipy_sparse_matrix(adj)
-            else:
-                raise RuntimeError(f"Unsupported numpy ndarray with ndim={g.ndim}")
-
-    # 3) NetworkX graph or anything convertible
-        else:
-            try:
-                adj = nx.adjacency_matrix(g)
-                G = g
-            except Exception as e:
-                raise RuntimeError(
-                    f"Cannot convert graph at index {i} of type {type(g)} to adjacency: {e}"
-                )
-
-    # Normalize adjacency
-        adj = adj.tocsr()
-        try:
-            adj.setdiag(0)
-        except Exception:
-            pass
-        adj.eliminate_zeros()
-
-    # Append both NetworkX graph and adjacency
-        graphs_out.append(G)
-        adjs.append(adj)
-
-    return graphs_out, adjs
-

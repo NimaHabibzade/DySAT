@@ -1,0 +1,56 @@
+09/08/2025 17:55:14 - INFO: dict_items([('base_model', 'DySAT'), ('model', 'quick_test'), ('dataset', 'EnronDySAT'), ('time_steps', 2), ('GPU_ID', 0), ('epochs', 2), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1)])
+09/08/2025 18:05:17 - INFO: dict_items([('base_model', 'DySAT'), ('model', 'quick_test'), ('dataset', 'EnronDySAT'), ('time_steps', 2), ('GPU_ID', 0), ('epochs', 2), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1)])
+09/08/2025 18:05:17 - INFO: # train: 0, # val: 0, # test: 0
+09/08/2025 18:05:26 - WARNING: From /usr/local/lib/python3.6/site-packages/tensorflow/python/ops/sparse_grad.py:281: calling sparse_reduce_sum (from tensorflow.python.ops.sparse_ops) with keep_dims is deprecated and will be removed in a future version.
+Instructions for updating:
+keep_dims is deprecated, use keepdims instead
+09/08/2025 18:05:33 - INFO: Mini batch Iter: 0 train_loss= nan
+09/08/2025 18:05:33 - INFO: Mini batch Iter: 0 graph_loss= nan
+09/08/2025 18:05:33 - INFO: Mini batch Iter: 0 reg_loss= 0.07630
+09/08/2025 18:05:33 - INFO: Time for Mini batch : 2.734881639480591
+09/08/2025 18:05:33 - INFO: Time for epoch : 2.7345402240753174
+09/08/2025 18:06:15 - INFO: dict_items([('base_model', 'DySAT'), ('model', 'quick_test'), ('dataset', 'EnronDySAT'), ('time_steps', 2), ('GPU_ID', 0), ('epochs', 2), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1)])
+09/08/2025 18:06:15 - INFO: # train: 0, # val: 0, # test: 0
+09/08/2025 18:06:21 - WARNING: From /usr/local/lib/python3.6/site-packages/tensorflow/python/ops/sparse_grad.py:281: calling sparse_reduce_sum (from tensorflow.python.ops.sparse_ops) with keep_dims is deprecated and will be removed in a future version.
+Instructions for updating:
+keep_dims is deprecated, use keepdims instead
+09/08/2025 18:06:27 - INFO: Mini batch Iter: 0 train_loss= nan
+09/08/2025 18:06:27 - INFO: Mini batch Iter: 0 graph_loss= nan
+09/08/2025 18:06:27 - INFO: Mini batch Iter: 0 reg_loss= 0.07630
+09/08/2025 18:06:27 - INFO: Time for Mini batch : 2.557886838912964
+09/08/2025 18:06:27 - INFO: Time for epoch : 2.5575413703918457
+09/08/2025 18:32:51 - INFO: dict_items([('base_model', 'DySAT'), ('model', 'quick_test'), ('dataset', 'EnronDySAT'), ('time_steps', 2), ('GPU_ID', 0), ('epochs', 2), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1)])
+09/08/2025 18:32:51 - INFO: # train: 0, # val: 0, # test: 0
+09/08/2025 18:32:57 - WARNING: From /usr/local/lib/python3.6/site-packages/tensorflow/python/ops/sparse_grad.py:281: calling sparse_reduce_sum (from tensorflow.python.ops.sparse_ops) with keep_dims is deprecated and will be removed in a future version.
+Instructions for updating:
+keep_dims is deprecated, use keepdims instead
+09/08/2025 18:33:04 - INFO: Mini batch Iter: 0 train_loss= nan
+09/08/2025 18:33:04 - INFO: Mini batch Iter: 0 graph_loss= nan
+09/08/2025 18:33:04 - INFO: Mini batch Iter: 0 reg_loss= 0.07630
+09/08/2025 18:33:04 - INFO: Time for Mini batch : 3.239468574523926
+09/08/2025 18:33:04 - INFO: Time for epoch : 3.239135265350342
+09/08/2025 18:59:32 - INFO: dict_items([('base_model', 'DySAT'), ('model', 'quick_test'), ('dataset', 'EnronDySAT'), ('time_steps', 2), ('GPU_ID', 0), ('epochs', 2), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1)])
+09/08/2025 19:17:21 - INFO: dict_items([('base_model', 'DySAT'), ('model', 'quick_test'), ('dataset', 'EnronDySAT'), ('time_steps', 2), ('GPU_ID', 0), ('epochs', 2), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1)])
+09/08/2025 19:17:21 - INFO: # train: 32, # val: 31, # test: 93
+09/08/2025 19:17:26 - WARNING: From /usr/local/lib/python3.6/site-packages/tensorflow/python/ops/sparse_grad.py:281: calling sparse_reduce_sum (from tensorflow.python.ops.sparse_ops) with keep_dims is deprecated and will be removed in a future version.
+Instructions for updating:
+keep_dims is deprecated, use keepdims instead
+09/08/2025 19:17:33 - INFO: Mini batch Iter: 0 train_loss= 3.57781
+09/08/2025 19:17:33 - INFO: Mini batch Iter: 0 graph_loss= 3.50150
+09/08/2025 19:17:33 - INFO: Mini batch Iter: 0 reg_loss= 0.07630
+09/08/2025 19:17:33 - INFO: Time for Mini batch : 2.467426300048828
+09/08/2025 19:17:33 - INFO: Time for epoch : 2.4670393466949463
+09/08/2025 19:17:33 - INFO: Val results at epoch 0: Measure (HAD) AUC: 0.5244536940686785
+09/08/2025 19:17:33 - INFO: Test results at epoch 0: Measure (HAD) AUC: 0.6431957451728523
+09/08/2025 19:17:33 - INFO: Mini batch Iter: 0 train_loss= 2.65524
+09/08/2025 19:17:33 - INFO: Mini batch Iter: 0 graph_loss= 2.57947
+09/08/2025 19:17:33 - INFO: Mini batch Iter: 0 reg_loss= 0.07577
+09/08/2025 19:17:33 - INFO: Time for Mini batch : 0.050454139709472656
+09/08/2025 19:17:33 - INFO: Time for epoch : 0.05009770393371582
+09/08/2025 19:17:33 - INFO: Val results at epoch 1: Measure (HAD) AUC: 0.5400624349635796
+09/08/2025 19:17:33 - INFO: Test results at epoch 1: Measure (HAD) AUC: 0.6546421551624465
+09/08/2025 19:17:33 - INFO: Best epoch 1
+09/08/2025 19:17:33 - INFO: Best epoch val results defaultdict(<function evaluate_classifier.<locals>.<lambda> at 0x7f9ae7e53730>, {'SIGMOID': [0.5504682622268471, 0.5504682622268471], 'HAD': [0.5400624349635796, 0.5400624349635796]})
+
+09/08/2025 19:17:33 - INFO: Best epoch test results defaultdict(<function evaluate_classifier.<locals>.<lambda> at 0x7f9ae7e53510>, {'SIGMOID': [0.5749797664469881, 0.5749797664469881], 'HAD': [0.6546421551624465, 0.6546421551624465]})
+

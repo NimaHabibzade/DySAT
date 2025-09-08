@@ -1,0 +1,35 @@
+2025-09-08 18:06:15.989071: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+/usr/local/lib/python3.6/site-packages/scipy/sparse/compressed.py:746: SparseEfficiencyWarning: Changing the sparsity structure of a csr_matrix is expensive. lil_matrix is more efficient.
+  SparseEfficiencyWarning)
+/usr/local/lib/python3.6/site-packages/tensorflow/python/ops/gradients_impl.py:108: UserWarning: Converting sparse IndexedSlices to a dense Tensor of unknown shape. This may consume a large amount of memory.
+  "Converting sparse IndexedSlices to a dense Tensor of unknown shape. "
+WARNING:tensorflow:From /usr/local/lib/python3.6/site-packages/tensorflow/python/ops/sparse_grad.py:281: calling sparse_reduce_sum (from tensorflow.python.ops.sparse_ops) with keep_dims is deprecated and will be removed in a future version.
+Instructions for updating:
+keep_dims is deprecated, use keepdims instead
+Updated flags dict_items([('base_model', 'DySAT'), ('model', 'quick_test'), ('dataset', 'EnronDySAT'), ('time_steps', 2), ('GPU_ID', 0), ('epochs', 2), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1)])
+Loaded context pairs from pkl file directly
+Loaded eval data
+# train: 0, # val: 0, # test: 0
+Initializing session
+# train nodes 184
+# training batches per epoch 1
+Epoch: 0001
+Time for epoch  2.5575413703918457
+Traceback (most recent call last):
+  File "train.py", line 237, in <module>
+    test_edges_false, emb, emb)
+  File "/workspaces/DySAT/eval/link_prediction.py", line 70, in evaluate_classifier
+    test_auc = get_roc_score_t(test_pos, test_neg, source_embeds, target_embeds)
+  File "/workspaces/DySAT/eval/link_prediction.py", line 142, in get_roc_score_t
+    roc_score = roc_auc_score(labels_all, pred_all)
+  File "/usr/local/lib/python3.6/site-packages/sklearn/metrics/ranking.py", line 277, in roc_auc_score
+    sample_weight=sample_weight)
+  File "/usr/local/lib/python3.6/site-packages/sklearn/metrics/base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "/usr/local/lib/python3.6/site-packages/sklearn/metrics/ranking.py", line 268, in _binary_roc_auc_score
+    raise ValueError("Only one class present in y_true. ROC AUC score "
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+Namespace(GPU_ID=0, base_model='DySAT', batch_size=512, dataset='EnronDySAT', epochs=2, featureless='True', learning_rate=0.001, max_gradient_norm=1.0, max_time=2, min_time=2, model='quick_test', neg_sample_size=10, neg_weight=1.0, position_ffn='True', run_parallel='False', spatial_drop=0.1, structural_head_config='16,8,8', structural_layer_config='128', temporal_drop=0.5, temporal_head_config='16', temporal_layer_config='128', test_freq=1, use_residual='False', val_freq=1, walk_len=20, weight_decay=0.0005, window=-1)
+Args parallel param:  False
+Running time steps 2 to 2 sequentially on GPU 0
+Call  python train.py --time_steps 2 --base_model DySAT --model quick_test --dataset EnronDySAT
