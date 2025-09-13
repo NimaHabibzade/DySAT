@@ -1,11 +1,11 @@
-min_time	2
-max_time	2
+min_time	10
+max_time	10
 run_parallel	False
 base_model	DySAT
 model	quick_test
 dataset	EnronDySAT
 GPU_ID	0
-epochs	2
+epochs	200
 val_freq	1
 test_freq	1
 batch_size	512

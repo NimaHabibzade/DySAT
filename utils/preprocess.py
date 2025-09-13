@@ -7,10 +7,18 @@ import tensorflow as tf
 from .utilities import run_random_walks_n2v
 import dill
 import os
+import random
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
-np.random.seed(123)
+np.random.seed(28)
+
+# Optional flags you can set from command line (safe to define here)
+# (If your run_script parses arguments and sets FLAGS, those will take precedence;
+#  otherwise you can use environment variables described below)
+flags.DEFINE_string('eval_sampling_strategy', '', "One of: rand_pos_rand_neg, rand_pos_hist_neg, hist_pos_rand_neg, hist_pos_hist_neg. If empty, use original split logic.")
+flags.DEFINE_float('eval_neg_ratio', 1.0, "Negative-to-positive sampling ratio used when sampling negatives.")
+# seed flag typically already exists; we will fall back to FLAGS.seed if present.
 
 def load_graphs(dataset_str):
     """
@@ -147,21 +155,235 @@ def get_context_pairs(graphs, num_time_steps):
 
     return context_pairs_train
 
+#
+# --- New sampling helpers for "future-snapshot" evaluation ---
+#
+
+def _edges_from_adj(adj):
+    """Return set of sorted edge tuples from a scipy CSR/COO adjacency or a networkx Graph."""
+    try:
+        if hasattr(adj, "tocoo"):
+            coo = adj.tocoo()
+            u = coo.row.tolist()
+            v = coo.col.tolist()
+            edges = {tuple(sorted((int(a), int(b)))) for a,b in zip(u,v) if a!=b}
+            return edges
+    except Exception:
+        pass
+    try:
+        # networkx Graph
+        edges = {tuple(sorted((int(a), int(b)))) for a,b in adj.edges()}
+        return edges
+    except Exception:
+        pass
+    try:
+        arr = np.asarray(adj)
+        if arr.ndim == 2 and arr.shape[0] in (2,):
+            u = arr[0].tolist()
+            v = arr[1].tolist()
+            edges = {tuple(sorted((int(a), int(b)))) for a,b in zip(u,v) if a!=b}
+            return edges
+    except Exception:
+        pass
+    return set()
+
+def sample_rand_pos_rand_neg(pos_edge_set: set, rand_neg_edge_set: set):
+    n = min(len(pos_edge_set), len(rand_neg_edge_set))
+    if n == 0:
+        return [], []
+    pos = random.sample(list(pos_edge_set), n)
+    neg = random.sample(list(rand_neg_edge_set), n)
+    return pos, neg
+
+def sample_rand_pos_hist_neg(pos_edge_set: set, past_edge_set: set):
+    hist_neg = list(past_edge_set.difference(pos_edge_set))
+    n = min(len(pos_edge_set), len(hist_neg))
+    if n == 0:
+        return [], []
+    pos = random.sample(list(pos_edge_set), n)
+    neg = random.sample(hist_neg, n)
+    return pos, neg
+
+def sample_hist_pos_rand_neg(pos_edge_set: set, rand_neg_edge_set: set, past_edge_set: set):
+    hist_pos = list(pos_edge_set.intersection(past_edge_set))
+    n = min(len(hist_pos), len(rand_neg_edge_set))
+    if n == 0:
+        return [], []
+    pos = random.sample(hist_pos, n)
+    neg = random.sample(list(rand_neg_edge_set), n)
+    return pos, neg
+
+def sample_hist_pos_hist_neg(pos_edge_set: set, past_edge_set: set):
+    hist_pos = list(pos_edge_set.intersection(past_edge_set))
+    hist_neg = list(past_edge_set.difference(pos_edge_set))
+    n = min(len(hist_pos), len(hist_neg))
+    if n == 0:
+        return [], []
+    pos = random.sample(hist_pos, n)
+    neg = random.sample(hist_neg, n)
+    return pos, neg
+
+def _build_full_past_edge_set(adjs, upto_idx):
+    """Union of edges in adjs[0:upto_idx+1] (inclusive)."""
+    full = set()
+    for k in range(0, upto_idx+1):
+        full |= _edges_from_adj(adjs[k])
+    return full
+
+def _random_neg_pool(num_needed, nodes_pool, forbidden_set, max_attempts=200000):
+    """Generate up to num_needed unique negative edges (sorted tuples) from nodes_pool avoiding forbidden_set."""
+    nodes = list(nodes_pool)
+    rand_neg = set()
+    attempts = 0
+    while len(rand_neg) < max(1, num_needed) and attempts < max_attempts:
+        u = random.choice(nodes)
+        v = random.choice(nodes)
+        if u == v:
+            attempts += 1
+            continue
+        pair = tuple(sorted((int(u), int(v))))
+        if pair in forbidden_set:
+            attempts += 1
+            continue
+        rand_neg.add(pair)
+        attempts += 1
+    return rand_neg
+
+def create_data_splits_future(adjs, eval_idx, dataset,
+                              val_mask_fraction=0.2,
+                              test_mask_fraction=0.6,
+                              strategy='rand_pos_rand_neg',
+                              neg_ratio=1.0,
+                              seed=None):
+    """
+    Create train/val/test splits for predicting links from adjs[eval_idx] -> adjs[eval_idx+1].
+    This function uses user-selectable negative-sampling strategies.
+    """
+    if seed is not None:
+        random.seed(seed)
+        np.random.seed(seed)
+
+    adj = adjs[eval_idx]
+    next_adj = adjs[eval_idx + 1]
+    # edges in next snapshot (positive candidates)
+    edges_next = np.array(list(set(nx.from_scipy_sparse_matrix(next_adj).edges())))
+    # filter edges to those within node range of current adj
+    edges = []
+    for e in edges_next:
+        if e[0] < adj.shape[0] and e[1] < adj.shape[0]:
+            edges.append(e)
+    edges = np.array(edges)
+
+    # Build 'edges_all' to avoid sampling true edges as negatives
+    # edges_all is next_adj's edge list
+    edges_all = edges.copy()
+
+    # Build full past up to eval_idx (inclusive of current snapshot)
+    full_past = _build_full_past_edge_set(adjs, eval_idx)
+
+    # Node presence pool: try loading node_masks if available
+    node_masks_path = os.path.join("data", dataset, "node_masks.npy")
+    if os.path.exists(node_masks_path):
+        masks = np.load(node_masks_path)
+        if masks.ndim == 2:
+            nodes_pool = np.where(masks[eval_idx])[0].tolist()
+        else:
+            nodes_pool = list(range(adj.shape[0]))
+    else:
+        # fallback: nodes with degree > 0 in current adj
+        csr = adj.tocsr()
+        deg = (csr.indptr[1:] - csr.indptr[:-1])
+        nodes_pool = np.where(deg >= 0)[0].tolist()  # include all nodes
+    if len(nodes_pool) == 0:
+        nodes_pool = list(range(adj.shape[0]))
+
+    # Shuffle edges and split to train/val/test
+    all_edge_idx = list(range(edges.shape[0]))
+    np.random.shuffle(all_edge_idx)
+    num_test = int(np.floor(edges.shape[0] * test_mask_fraction))
+    num_val = int(np.floor(edges.shape[0] * val_mask_fraction))
+    val_edge_idx = all_edge_idx[:num_val]
+    test_edge_idx = all_edge_idx[num_val:(num_val + num_test)]
+    test_edges = edges[test_edge_idx] if len(test_edge_idx) > 0 else np.empty((0,2), dtype=int)
+    val_edges = edges[val_edge_idx] if len(val_edge_idx) > 0 else np.empty((0,2), dtype=int)
+    train_edges = np.delete(edges, np.hstack([test_edge_idx, val_edge_idx]), axis=0) if edges.shape[0]>0 else np.empty((0,2), dtype=int)
+
+    # For each positive set, produce negatives based on chosen strategy
+    def make_negatives_for_posset(posset):
+        posset_set = {tuple(sorted((int(a), int(b)))) for a,b in posset} if len(posset)>0 else set()
+        # forbidden edges: those in next_adj (edges_all)
+        forbidden = {tuple(sorted((int(a), int(b)))) for a,b in edges_all}
+        # Build random neg pool large enough
+        target_neg_total = int(round(len(posset) * neg_ratio))
+        rand_neg_pool = _random_neg_pool(target_neg_total*3 if target_neg_total>0 else 1, nodes_pool, forbidden)
+        # Now choose sampler
+        if strategy == 'rand_pos_rand_neg':
+            pos, neg = sample_rand_pos_rand_neg(posset_set, rand_neg_pool)
+        elif strategy == 'rand_pos_hist_neg':
+            pos, neg = sample_rand_pos_hist_neg(posset_set, full_past)
+        elif strategy == 'hist_pos_rand_neg':
+            pos, neg = sample_hist_pos_rand_neg(posset_set, rand_neg_pool, full_past)
+        elif strategy == 'hist_pos_hist_neg':
+            pos, neg = sample_hist_pos_hist_neg(posset_set, full_past)
+        else:
+            raise ValueError("Unknown strategy: " + str(strategy))
+        # convert to list of [u,v]
+        pos_list = [list(p) for p in pos]
+        neg_list = [list(n) for n in neg]
+        return pos_list, neg_list
+
+    # produce lists
+    train_pos, train_neg = make_negatives_for_posset(train_edges)
+    val_pos, val_neg = make_negatives_for_posset(val_edges)
+    test_pos, test_neg = make_negatives_for_posset(test_edges)
+
+    print("# future-sampling: train/val/test positives sizes:", len(train_pos), len(val_pos), len(test_pos))
+    print("# future-sampling: train/val/test negatives sizes:", len(train_neg), len(val_neg), len(test_neg))
+    return train_pos, train_neg, val_pos, val_neg, test_pos, test_neg
+
+#
+# --- Original evaluation code (kept as fallback) and modified get_evaluation_data that can call
+#     the future-sampling variant if requested via FLAGS or environment variable.
+#
+
 def get_evaluation_data(adjs, num_time_steps, dataset):
     """ Load train/val/test examples to evaluate link prediction performance"""
     eval_idx = num_time_steps - 2
     eval_path = "data/{}/eval_{}.npz".format(dataset, str(eval_idx))
+
+    # Allow controlling sampling via TF flag or environment var:
+    strategy_flag = getattr(FLAGS, 'eval_sampling_strategy', '') or os.environ.get('EVAL_SAMPLING_STRATEGY', '')
+    neg_ratio_flag = float(getattr(FLAGS, 'eval_neg_ratio', 1.0) or os.environ.get('EVAL_NEG_RATIO', 1.0))
+    seed_flag = getattr(FLAGS, 'seed', None)
+    if seed_flag is None:
+        seed_flag = int(os.environ.get('SEED', '0'))
+
     try:
         train_edges, train_edges_false, val_edges, val_edges_false, test_edges, test_edges_false = \
             np.load(eval_path, encoding='bytes', allow_pickle=True)['data']
         print("Loaded eval data")
     except IOError:
-        next_adjs = adjs[eval_idx + 1]
         print("Generating and saving eval data ....")
-        train_edges, train_edges_false, val_edges, val_edges_false, test_edges, test_edges_false = \
-            create_data_splits(adjs[eval_idx], next_adjs, val_mask_fraction=0.2, test_mask_fraction=0.6)
+        if strategy_flag:
+            # use future-snapshot sampling with chosen strategy
+            te, tne, ve, vne, tse, tsne = create_data_splits_future(
+                adjs, eval_idx, dataset,
+                val_mask_fraction=0.2,
+                test_mask_fraction=0.6,
+                strategy=strategy_flag,
+                neg_ratio=neg_ratio_flag,
+                seed=seed_flag
+            )
+            train_edges, train_edges_false, val_edges, val_edges_false, test_edges, test_edges_false = \
+                te, tne, ve, vne, tse, tsne
+        else:
+            # fallback to original splitting code (classic DySAT behavior)
+            next_adjs = adjs[eval_idx + 1]
+            train_edges, train_edges_false, val_edges, val_edges_false, test_edges, test_edges_false = \
+                create_data_splits(adjs[eval_idx], next_adjs, val_mask_fraction=0.2, test_mask_fraction=0.6)
+        # save for faster reuse
         np.savez(eval_path, data=np.array([train_edges, train_edges_false, val_edges, val_edges_false,
-                                           test_edges, test_edges_false]))
+                                           test_edges, test_edges_false], dtype=object))
 
     return train_edges, train_edges_false, val_edges, val_edges_false, test_edges, test_edges_false
 
