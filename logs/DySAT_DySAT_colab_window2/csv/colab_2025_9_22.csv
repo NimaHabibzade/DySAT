@@ -1,0 +1,8 @@
+colab,2,DySAT_colab_window2,SIGMOID,val,AUC,0.7646502835538753
+colab,2,DySAT_colab_window2,HAD,val,AUC,0.775992438563327
+colab,2,DySAT_colab_window2,SIGMOID,test,AUC,0.7893824826717076
+colab,2,DySAT_colab_window2,HAD,test,AUC,0.787597143457257
+colab,3,DySAT_colab_window2,SIGMOID,val,AUC,0.8303402646502834
+colab,3,DySAT_colab_window2,HAD,val,AUC,0.8156899810964083
+colab,3,DySAT_colab_window2,SIGMOID,test,AUC,0.8276486724289633
+colab,3,DySAT_colab_window2,HAD,test,AUC,0.8155892552145333

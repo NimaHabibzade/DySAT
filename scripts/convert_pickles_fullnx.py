@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import os, pickle, numpy as np, networkx as nx
 
-INPUT_DIR = "data/processed_data/enron_simple" 
-OUT_PATH = "data/EnronDySAT/graphs_full.npz"
+INPUT_DIR = "data/processed_data/colab" 
+OUT_PATH = "data/Colab/graphs_full.npz"
 
 graphs = []
 files = sorted([f for f in os.listdir(INPUT_DIR) if f.lower().endswith(('.pickle','.pkl'))],

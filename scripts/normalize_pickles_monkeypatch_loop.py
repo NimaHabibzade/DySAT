@@ -105,5 +105,5 @@ def main():
 
     print("Done. Simplified pickles are in:", args.out_dir)
 
-if __name__ == '__main__':
+if __name__== '__main__':
     main()
