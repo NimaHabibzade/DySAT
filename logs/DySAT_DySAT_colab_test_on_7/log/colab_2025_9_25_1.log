@@ -1,0 +1,56 @@
+09/25/2025 11:23:01 - INFO: dict_items([('base_model', 'DySAT'), ('model', 'DySAT_colab_test_on_7'), ('dataset', 'colab'), ('time_steps', 1), ('GPU_ID', 0), ('epochs', 100), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1), ('eval_sampling_strategy', ''), ('eval_neg_ratio', 1.0)])
+09/25/2025 11:23:01 - INFO: # train: 33, # val: 33, # test: 99
+09/25/2025 11:23:06 - INFO: Mini batch Iter: 0 train_loss= 0.07565
+09/25/2025 11:23:06 - INFO: Mini batch Iter: 0 graph_loss= 0.00000
+09/25/2025 11:23:06 - INFO: Mini batch Iter: 0 reg_loss= 0.07565
+09/25/2025 11:23:06 - INFO: Time for Mini batch : 0.11666536331176758
+09/25/2025 11:23:06 - INFO: Time for epoch : 0.1163327693939209
+09/25/2025 11:30:42 - INFO: dict_items([('base_model', 'DySAT'), ('model', 'DySAT_colab_test_on_7'), ('dataset', 'colab'), ('time_steps', 1), ('GPU_ID', 0), ('epochs', 100), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1), ('eval_sampling_strategy', ''), ('eval_neg_ratio', 1.0)])
+09/25/2025 11:30:42 - INFO: # train: 33, # val: 33, # test: 99
+09/25/2025 11:30:47 - INFO: Mini batch Iter: 0 train_loss= 0.07565
+09/25/2025 11:30:47 - INFO: Mini batch Iter: 0 graph_loss= 0.00000
+09/25/2025 11:30:47 - INFO: Mini batch Iter: 0 reg_loss= 0.07565
+09/25/2025 11:30:47 - INFO: Time for Mini batch : 0.11562299728393555
+09/25/2025 11:30:47 - INFO: Time for epoch : 0.11511445045471191
+09/25/2025 11:34:05 - INFO: dict_items([('base_model', 'DySAT'), ('model', 'DySAT_colab_test_on_7'), ('dataset', 'colab'), ('time_steps', 1), ('GPU_ID', 0), ('epochs', 100), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1), ('eval_sampling_strategy', ''), ('eval_neg_ratio', 1.0)])
+09/25/2025 11:34:05 - INFO: # train: 33, # val: 33, # test: 99
+09/25/2025 11:34:09 - INFO: Mini batch Iter: 0 train_loss= 0.07565
+09/25/2025 11:34:09 - INFO: Mini batch Iter: 0 graph_loss= 0.00000
+09/25/2025 11:34:09 - INFO: Mini batch Iter: 0 reg_loss= 0.07565
+09/25/2025 11:34:09 - INFO: Time for Mini batch : 0.11496639251708984
+09/25/2025 11:34:09 - INFO: Time for epoch : 0.1144571304321289
+09/25/2025 11:36:59 - INFO: dict_items([('base_model', 'DySAT'), ('model', 'DySAT_colab_test_on_7'), ('dataset', 'colab'), ('time_steps', 1), ('GPU_ID', 0), ('epochs', 150), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1), ('eval_sampling_strategy', ''), ('eval_neg_ratio', 1.0)])
+09/25/2025 11:36:59 - INFO: # train: 33, # val: 33, # test: 99
+09/25/2025 11:37:03 - INFO: Mini batch Iter: 0 train_loss= 0.07565
+09/25/2025 11:37:03 - INFO: Mini batch Iter: 0 graph_loss= 0.00000
+09/25/2025 11:37:03 - INFO: Mini batch Iter: 0 reg_loss= 0.07565
+09/25/2025 11:37:03 - INFO: Time for Mini batch : 0.13538074493408203
+09/25/2025 11:37:03 - INFO: Time for epoch : 0.1349947452545166
+09/25/2025 11:39:39 - INFO: dict_items([('base_model', 'DySAT'), ('model', 'DySAT_colab_test_on_7'), ('dataset', 'colab'), ('time_steps', 1), ('GPU_ID', 0), ('epochs', 150), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1), ('eval_sampling_strategy', ''), ('eval_neg_ratio', 1.0)])
+09/25/2025 11:39:39 - INFO: # train: 33, # val: 33, # test: 99
+09/25/2025 11:39:44 - INFO: Mini batch Iter: 0 train_loss= 0.07565
+09/25/2025 11:39:44 - INFO: Mini batch Iter: 0 graph_loss= 0.00000
+09/25/2025 11:39:44 - INFO: Mini batch Iter: 0 reg_loss= 0.07565
+09/25/2025 11:39:44 - INFO: Time for Mini batch : 0.11670708656311035
+09/25/2025 11:39:44 - INFO: Time for epoch : 0.11629676818847656
+09/25/2025 11:42:30 - INFO: dict_items([('base_model', 'DySAT'), ('model', 'DySAT_colab_test_on_7'), ('dataset', 'colab'), ('time_steps', 1), ('GPU_ID', 0), ('epochs', 150), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1), ('eval_sampling_strategy', ''), ('eval_neg_ratio', 1.0)])
+09/25/2025 11:42:30 - INFO: # train: 33, # val: 33, # test: 99
+09/25/2025 11:42:35 - INFO: Mini batch Iter: 0 train_loss= 0.07565
+09/25/2025 11:42:35 - INFO: Mini batch Iter: 0 graph_loss= 0.00000
+09/25/2025 11:42:35 - INFO: Mini batch Iter: 0 reg_loss= 0.07565
+09/25/2025 11:42:35 - INFO: Time for Mini batch : 0.1143178939819336
+09/25/2025 11:42:35 - INFO: Time for epoch : 0.11400485038757324
+09/25/2025 11:59:31 - INFO: dict_items([('base_model', 'DySAT'), ('model', 'DySAT_colab_test_on_7'), ('dataset', 'colab'), ('time_steps', 1), ('GPU_ID', 0), ('epochs', 100), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1), ('eval_sampling_strategy', ''), ('eval_neg_ratio', 1.0)])
+09/25/2025 11:59:32 - INFO: # train: 33, # val: 33, # test: 99
+09/25/2025 11:59:36 - INFO: Mini batch Iter: 0 train_loss= 0.07565
+09/25/2025 11:59:36 - INFO: Mini batch Iter: 0 graph_loss= 0.00000
+09/25/2025 11:59:36 - INFO: Mini batch Iter: 0 reg_loss= 0.07565
+09/25/2025 11:59:36 - INFO: Time for Mini batch : 0.13194918632507324
+09/25/2025 11:59:36 - INFO: Time for epoch : 0.13052129745483398
+09/25/2025 12:00:42 - INFO: dict_items([('base_model', 'DySAT'), ('model', 'DySAT_colab_test_on_7'), ('dataset', 'colab'), ('time_steps', 1), ('GPU_ID', 0), ('epochs', 100), ('batch_size', 512), ('featureless', 'True'), ('max_gradient_norm', 1.0), ('test_freq', 1), ('val_freq', 1), ('neg_sample_size', 10), ('walk_len', 20), ('neg_weight', 1.0), ('learning_rate', 0.001), ('spatial_drop', 0.1), ('temporal_drop', 0.5), ('weight_decay', 0.0005), ('use_residual', 'False'), ('structural_head_config', '16,8,8'), ('structural_layer_config', '128'), ('temporal_head_config', '16'), ('temporal_layer_config', '128'), ('position_ffn', 'True'), ('optimizer', 'adam'), ('seed', 7), ('save_dir', 'output'), ('log_dir', 'log'), ('csv_dir', 'csv'), ('model_dir', 'model'), ('window', -1), ('eval_sampling_strategy', ''), ('eval_neg_ratio', 1.0)])
+09/25/2025 12:00:42 - INFO: # train: 33, # val: 33, # test: 99
+09/25/2025 12:00:47 - INFO: Mini batch Iter: 0 train_loss= 0.07565
+09/25/2025 12:00:47 - INFO: Mini batch Iter: 0 graph_loss= 0.00000
+09/25/2025 12:00:47 - INFO: Mini batch Iter: 0 reg_loss= 0.07565
+09/25/2025 12:00:47 - INFO: Time for Mini batch : 0.11531662940979004
+09/25/2025 12:00:47 - INFO: Time for epoch : 0.11484456062316895

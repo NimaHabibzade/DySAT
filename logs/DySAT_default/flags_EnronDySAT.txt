@@ -1,11 +1,11 @@
-min_time	10
-max_time	10
+min_time	9
+max_time	9
 run_parallel	False
 base_model	DySAT
-model	quick_test
+model	default
 dataset	EnronDySAT
 GPU_ID	0
-epochs	100
+epochs	150
 val_freq	1
 test_freq	1
 batch_size	512
@@ -24,4 +24,4 @@ structural_layer_config	128
 temporal_head_config	16
 temporal_layer_config	128
 position_ffn	True
-window	-1
+window	3

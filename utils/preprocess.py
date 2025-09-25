@@ -11,7 +11,7 @@ import random
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
-np.random.seed(28)
+np.random.seed(42)
 
 # Optional flags you can set from command line (safe to define here)
 # (If your run_script parses arguments and sets FLAGS, those will take precedence;

@@ -17,8 +17,8 @@ from utils.utilities import *
 from utils.incremental_minibatch import *
 
 
-np.random.seed(123)
-tf.set_random_seed(123)
+np.random.seed(42)
+tf.set_random_seed(42)
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS

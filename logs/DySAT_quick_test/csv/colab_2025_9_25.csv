@@ -1,0 +1,4 @@
+colab,8,quick_test,SIGMOID,val,AUC,0.8701138811942136
+colab,8,quick_test,HAD,val,AUC,0.8747306863650355
+colab,8,quick_test,SIGMOID,test,AUC,0.8908869659275285
+colab,8,quick_test,HAD,test,AUC,0.8901771227690644
